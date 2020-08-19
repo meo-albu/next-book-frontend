@@ -10,8 +10,8 @@ import { WishIcon } from './WishIcon';
 import axios from 'axios'
 import { getBooks } from '../../../Store/action/bookActions';
 import { openLoginModal } from '../../../Store/action/authModalActions';
-import { Comment } from './Comments/Comment';
 import { AddComment } from './Comments/AddComment';
+import { Comments } from './Comments/Comments';
 
 const options = {
   colorCount: 5,
@@ -74,25 +74,23 @@ export const BookModal = () => {
   }, [bookDetails.likes, user.id])
 
   const postLike = () => {
-    console.log('postLike')
+    setLikesCount(likesCount + 1)
+    setLiked(true)
     axios.post(`${process.env.REACT_APP_API_URL}/likes`, {
       book: bookDetails,
       user
     }, config).then(response => {
-        setLikesCount(likesCount + 1)
         setLikeId(response.data.id)
-        setLiked(true)
         dispatch(getBooks())
       })
       .catch(err => console.log(err.response))
   }
 
   const deleteLike = (id) => {
-    console.log('deleteLike')
+    setLikesCount(likesCount - 1)
+    setLiked(false)
     axios.delete(`${process.env.REACT_APP_API_URL}/likes/${id}`, config)
     .then(() => {
-        setLikesCount(likesCount - 1)
-        setLiked(false)
         dispatch(getBooks())
       })
   }
@@ -133,23 +131,15 @@ export const BookModal = () => {
               </div>
               <br />
 
-              <ul>
+              {/* <ul>
                 {bookDetails.image.map(image => {
                   return <li key={image.id}><img src={process.env.REACT_APP_API_URL + image.url} alt={image.name} /></li>
                 })}
-              </ul>
+              </ul> */}
 
               <h4>Comments:</h4>
-              {
-                bookDetails.comments.map(comment => {
-                  return (
-                    <Comment key={comment.id} comment={comment} />
-                  )
-                })
-              }
-
+              <Comments book={bookDetails} />
               <AddComment book={bookDetails} />
-
             </div>
           </Container>
           <Bg 

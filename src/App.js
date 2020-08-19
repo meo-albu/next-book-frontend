@@ -12,6 +12,7 @@ import { Login } from './Components/Auth/Login';
 import { Loader } from './Components/Auth/Loader';
 import { Register } from './Components/Auth/Register';
 import { ShareBook } from './Components/ShareBook/ShareBook';
+import { getComments } from './Store/action/commentActions';
 
 export default function App() {
   
@@ -27,6 +28,7 @@ export default function App() {
   useEffect(() => {
     dispatch(autoLogin())
     dispatch(getBooks())
+    dispatch(getComments())
   }, [dispatch])
 
   return (

@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
 export const Comment = (props) => {
   const darkTheme = useSelector(state => state.themeReducer.darkTheme)
-  const [userName, setUserName] = useState('')
-
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users/${props.comment.user}`)
-    .then(response => {
-      setUserName(response.data.username)
-    })
-  }, [props.comment.user])
 
   return (
-      <Container darkTheme={darkTheme} ><span>{userName}</span>: {props.comment.comment}</Container>
+      <Container darkTheme={darkTheme} ><span>{props.user}</span>: {props.comment}</Container>
   )
 }
 

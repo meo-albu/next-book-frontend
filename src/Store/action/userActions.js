@@ -43,7 +43,7 @@ export const signUserUp = (userInfo) => dispatch => {
         dispatch(closeRegisterModal())
     }).catch(err => {
         dispatch(closeLoader())
-        dispatch(setError(err.response.data))
+        dispatch(setError(err.response.data.message[0].messages[0].message))
         dispatch(authError())
     })
 }

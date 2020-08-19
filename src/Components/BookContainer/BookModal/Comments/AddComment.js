@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-import {getBook} from '../../../../Store/action/modalActions'
+import {postComment} from '../../../../Store/action/commentActions'
 import {SendButton} from './SendButton'
 import { openLoginModal } from '../../../../Store/action/authModalActions'
 
@@ -22,14 +21,8 @@ export const AddComment = (props) => {
 
     if(comment.value.length > 0) {
       if(user.id) {
-        axios.post(`${process.env.REACT_APP_API_URL}/comments`, comm, {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem('token')}`
-          }
-        }).then(response => {
-          dispatch(getBook(response.data.book.id))
-          comment.value = ''
-        })
+        dispatch(postComment(comm))
+        comment.value = ''
       } else {
         dispatch(openLoginModal())
       }
