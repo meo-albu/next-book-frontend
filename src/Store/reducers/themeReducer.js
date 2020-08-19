@@ -76,7 +76,7 @@ const themeReducer = (state = defaultState, action) => {
           darkTheme: true,
           themeStyle: {
             ...state.themeStyle,
-            background: 'rgba(16, 16, 16, 1)',
+            background: 'rgba(29, 33, 46, 1)',
             textColor: 'rgba(255, 255, 255, 1)'
           }
         }
@@ -86,7 +86,7 @@ const themeReducer = (state = defaultState, action) => {
           darkTheme: false,
           themeStyle: {
             ...state.themeStyle,
-            background: 'rgba(244, 249, 218, 1)',
+            background: 'rgba(255, 255, 255, 1)',
             textColor: 'rgba(0, 0, 0, 1)'
           }
         }

@@ -15,17 +15,17 @@ export const Header = () => {
     <Containter theme={themeStyle} darkTheme={darkTheme} bookC={bookC} loggedIn={loggedIn}>
 
     {!bookC &&
-      !loggedIn && 
-        <div>
-          <Register onClick={() => {
-              dispatch(closeLoginModal())
-              dispatch(openRegisterModal())
-            }}>Register</Register>
-          <Login onClick={() => {
-            dispatch(closeRegisterModal())
-            dispatch(openLoginModal())
-          }}>Login</Login>
-        </div>
+        !loggedIn && 
+          <div>
+            <Register onClick={() => {
+                dispatch(closeLoginModal())
+                dispatch(openRegisterModal())
+              }}>Register</Register>
+            <Login onClick={() => {
+              dispatch(closeRegisterModal())
+              dispatch(openLoginModal())
+            }}>Login</Login>
+          </div>
       }
 
       <Burger onClick={() => dispatch(openSidebar())}><span></span></Burger>
@@ -38,24 +38,19 @@ const Logo = styled.div`
   position: absolute;
   left: 5%;
   top: 50%;
-  transform: ${({bookC}) => bookC ? 'scale(0.4) translateY(-45%)' : 'scale(1) translateY(15vh)' };
-  font-size: 130px;
-  background: ${({theme}) => theme.gradient};
+  transform: translateY(-50%);
+  font-size: 40px;
+  background: ${({theme}) => theme.primary};
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   transform-origin: top left;
   transition: transform 0.5s;
   font-family: 'Alex Brush', cursive;
-  font-weight: 900;
+  font-family: 'Niconne', cursive;
 
   @media only screen and (max-width: 600px) {
-    font-size: 70px;
-    transform: ${({bookC}) => bookC ? 'scale(0.5) translateY(-50%)' : 'scale(1) translateY(9vh)' };
-  }
-
-  &>img {
-    width: 100%;
+    font-size: 35px;
   }
 `
 
@@ -124,16 +119,16 @@ const Containter = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  
-  @media only screen and (max-width: 600px) {
-    justify-content: ${({bookC, loggedIn}) => bookC ? 'flex-end' : loggedIn ? 'flex-end' : 'space-between' };
-  }
 `
 
 const Login = styled.span`
   margin: 0 85px 0 0;
   cursor: pointer;
-  color: ${({theme}) => theme.textColor};;
+  color: ${({theme}) => theme.textColor};
+
+  @media only screen and (max-width: 600px) {
+   display: none
+  }
 `
 
 const Register = styled.button`
@@ -145,4 +140,8 @@ const Register = styled.button`
   padding: 7px 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   border-radius: 20px;
+
+  @media only screen and (max-width: 600px) {
+   display: none
+  }
 `

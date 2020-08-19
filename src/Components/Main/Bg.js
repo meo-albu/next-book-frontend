@@ -8,27 +8,39 @@ export const Bg = () => {
   const secondary = themeStyle.secondary
 
   return (
-    <Container>
-      <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1142.503" height="1022.975" viewBox="0 0 1142.503 1022.975">
+      <Container xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="1141.647" height="1124.321" viewBox="0 0 1141.647 1124.321">
         <defs>
-          <linearGradient id="linear-gradient" x1="0.201" y1="0.601" x2="1" y2="0.596" gradientUnits="objectBoundingBox">
-            <stop offset="0" stopColor={primary} />
-            <stop offset="1" stopColor={secondary} />
+          <linearGradient id="linear-gradient" x1="1.115" y1="0.743" x2="0" y2="0.626" gradientUnits="objectBoundingBox">
+            <stop offset="0" stopColor={primary}/>
+            <stop offset="1" stopColor={secondary}/>
           </linearGradient>
+          <filter id="Path_164" x="0" y="0" width="1141.647" height="1124.321" filterUnits="userSpaceOnUse">
+            <feOffset input="SourceAlpha"/>
+            <feGaussianBlur stdDeviation="21" result="blur"/>
+            <feFlood floodOpacity="0.271"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+          </filter>
         </defs>
-        <path id="Path_2" data-name="Path 2" d="M64.459,45.793C208.2-18.751,358.167-15.576,469.082-157.626,515.783-315.242,647.6-469.821,815.45-352.214c0,237.4,0,980.725,0,980.725s-856.189,1.946-1107.208,0c-114.828-78.468,79.781-212.1,167.346-284.1C-31.01,217.929-42.444,93.8,64.459,45.793Z" transform="translate(327.053 393.6)" fill="url(#linear-gradient)"/>
-      </svg>
-    </Container>
+        <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_164)">
+          <path id="Path_164-2" data-name="Path 164" d="M723.889-559.135c0,193.711,0,997.361,0,997.361H-291.758S45.223,445.707-129.916,255.74C-206.8,172.345-172.36-75,109.823-140.905,267-177.612,335.639-504.172,535.815-423.354S696.108-576.45,723.889-559.135Z" transform="translate(420.76 623.05)" fill="url(#linear-gradient)"/>
+        </g>
+      </Container>
   )
 }
 
-const Container = styled.div`
+const Container = styled.svg`
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
+  z-index: -1;
 
-  @media only screen and (max-width: 1700px) {
-    display: none;
+  @media only screen and (max-width: 1000px) {
+    opacity: 0;
+    visibility: hidden;
+  }
+  @media only screen and (max-width: 1600px) {
+    right: -50px;
   }
 `

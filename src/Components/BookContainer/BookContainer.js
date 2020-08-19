@@ -71,26 +71,26 @@ const Container = styled.div`
   font-size: 16px;
   position: absolute;
   box-sizing: padding-box;
-  transform: ${({bookC}) => bookC ? 'translateY(5vh)' : 'translateY(80vh)' };
-  transform-origin: top left;
+  transform: ${({bookC}) => bookC ? 'translateY(calc(-100% + 70px))' : 'translateY(0)' };
+  transform-origin: top center;
   transition: transform 0.2s;
-  height: 90vh;
-  width: 92vw;
-  left: calc(5% - 1vw);
+  height: calc(100% - 70px);
+  bottom: calc(-100% + 140px);
+  width: 100vw;
+  top: auto;
+  left: 0;
   background: ${({theme}) => theme.background};
-  /* border: 1px solid ${({theme, darkTheme}) => darkTheme ? theme.secondary : theme.primary }; */
-  border-radius: 1vw 1vw 0 0 ;
   color: ${({theme}) => theme.textColor};
   box-shadow: ${({darkTheme}) => darkTheme ? '0 0 10px rgba(0, 0, 0, 0.8)' : '0 0 10px rgba(0, 0, 0, 0.2)' };
-  padding: 0 30px 60px;
+  padding: 0 calc(5% - 30px) 60px;
+  border-radius: ${({bookC}) => bookC ? '0' : '1vw' };
 
   &>header {
     padding: 10px 0 20px;
   }
 
   @media only screen and (max-width: 600px) {
-    transform: ${({bookC}) => bookC ? 'translateY(20px)' : 'translateY(75vh)' };
-    border-radius: ${({bookC}) => bookC ? '0' : '3vw' };
+    transform: ${({bookC}) => bookC ? 'translateY(calc(-100% + 70px))' : 'translateY(100%)' };
     padding: 0 5px 120px;
     width: 100vw;
     left: 0;
@@ -108,10 +108,10 @@ const Container = styled.div`
       justify-content: space-between;
       flex-wrap: wrap;
 
-      /* &:after {
+      &:after {
         content: "";
         flex: auto;
-      } */
+      }
     }
 
     @media only screen and (max-width: 600px) {

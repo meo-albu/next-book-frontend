@@ -7,6 +7,7 @@ import { openSidebar, closeSidebar } from '../../Store/action/sidebarActions'
 import { CloseSidebarButton } from './CloseSidebarButton'
 import { DarkTheme } from './DarkTheme'
 import { logUserOut } from '../../Store/action/userActions'
+import { closeLoginModal, openRegisterModal, closeRegisterModal, openLoginModal } from '../../Store/action/authModalActions'
 
 export const Sidebar = () => {
   const themeStyle = useSelector(state => state.themeReducer.themeStyle)
@@ -37,6 +38,23 @@ export const Sidebar = () => {
   return (
     <Container sidebar={sidebar} ref={sidebarRef} theme={themeStyle}>
       <CloseSidebarButton />
+      {!loggedIn && 
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+        }}>
+          <Login onClick={() => {
+            dispatch(closeRegisterModal())
+            dispatch(openLoginModal())
+            dispatch(closeSidebar())
+          }}>Login</Login>
+          <Register onClick={() => {
+            dispatch(closeLoginModal())
+            dispatch(openRegisterModal())
+            dispatch(closeSidebar())
+            }}>Register</Register>
+        </div>}
       <h3>Change theme:</h3>
       <ChangeTheme />
       <DarkTheme />
@@ -124,4 +142,30 @@ const Logout = styled.button`
   font-size: 16px;
   font-weight: 300;
   cursor: pointer;
+`
+
+const Login = styled.span`
+  cursor: pointer;
+  color: ${({theme}) => theme.textColor};
+  display: none;
+
+  @media only screen and (max-width: 600px) {
+   display: inline-block;
+  }
+`
+
+const Register = styled.button`
+  margin: 0 0 0 15px;
+  cursor: pointer;
+  background: ${({theme}) => theme.primary};
+  color: white;
+  border: 0;
+  padding: 7px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  display: none;
+
+  @media only screen and (max-width: 600px) {
+   display: inline-block;
+  }
 `

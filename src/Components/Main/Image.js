@@ -631,10 +631,10 @@ const Container = styled.div`
   transform: translateY(-50%);
 
   @media only screen and (max-width: 1700px) {
-    right: 5%
+    top: 60%;
   }
 
-  @media only screen and (max-width: 1300px) {
+  @media only screen and (max-width: 1000px) {
     display: none;
   }
 `

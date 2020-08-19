@@ -6,7 +6,7 @@ export const themeColors = {
     secondary: 'rgba(106, 233, 157, 1)'
   },
   purpleTheme: {
-    primary: 'rgba(128, 0, 255, 1)',
+    primary: 'rgba(136, 0, 255, 1)',
     secondary: 'rgba(189, 123, 255, 1)'
   },
   blueTheme: {
@@ -24,7 +24,7 @@ export const themeColors = {
 }
 
 Object.values(themeColors).map(theme => {
-    theme.background = isDarkTheme ? 'rgba(16, 16, 16, 1)' : 'rgba(244, 249, 218, 1)'
+    theme.background = isDarkTheme ? 'rgba(29, 33, 46, 1)' : 'rgba(255, 255, 255, 1)'
     theme.textColor = isDarkTheme ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
     theme.gradient = `linear-gradient(90deg, ${theme.primary}, ${theme.secondary})`
     return true
