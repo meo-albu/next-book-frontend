@@ -68,7 +68,8 @@ export const ShareBook = () => {
 
   const shareBook = async e => {
     e.preventDefault()
-    const [title, author, description, image] = e.target.elements
+    // const [title, author, description, image] = e.target.elements
+    const [title, author, description] = e.target.elements
     
     dispatch(openLoader())
 
