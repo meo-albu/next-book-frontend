@@ -8,6 +8,7 @@ import shareBookReducer from './shareBookReducer'
 import modalReducer from './modalReducer'
 import loadingReducer from './loadingReducer'
 import commentReducer from './commentReducer'
+import genreReducer from './genreReducer'
 import {loginModalReducer, registerModalReducer} from './authModalReducer'
 import {combineReducers} from 'redux'
 
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     loginModalReducer,
     loadingReducer,
     shareBookReducer,
-    commentReducer
+    commentReducer,
+    genreReducer
 })
 
 export default rootReducer

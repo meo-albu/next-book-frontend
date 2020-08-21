@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import axios from 'axios'
@@ -28,14 +28,23 @@ export const ShareBook = () => {
   const titleRef = useRef()
   const authorRef = useRef()
 
+  const [categories, setCategories] = useState('')
+  
   const setInput = (book) => {
     titleRef.current.value = book.title
     if(book.authors)
       authorRef.current.value = book.authors[0]
     if(book.imageLinks)
       setImg(book.imageLinks.thumbnail)
+    if(book.categories) {
+      setCategories(book.categories)
+    }
   }
 
+  useEffect(() => {
+    console.log(categories)
+  }, [categories])
+  
   const findTitle = e => {
     const query = e.target.value
 
@@ -43,6 +52,7 @@ export const ShareBook = () => {
       setIsSearching(true)
       axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
         .then(res => {
+          console.log(res.data)
           if(res.data.items) {
             setBookTitles(res.data.items)
           }
@@ -62,21 +72,22 @@ export const ShareBook = () => {
     
     dispatch(openLoader())
 
-    const file = new FormData()
-    for(let imgFile in image.files) {
-      file.append('files', image.files[imgFile])
-    }
+    // const file = new FormData()
+    // for(let imgFile in image.files) {
+    //   file.append('files', image.files[imgFile])
+    // }
 
-    if(image.files.length > 0) {
-      axios.post(`${process.env.REACT_APP_API_URL}/upload`, file, config)
-      .then((response) => {
+    // if(image.files.length > 0) {
+      // axios.post(`${process.env.REACT_APP_API_URL}/upload`, file, config)
+      // .then((response) => {
         if(title.value.length > 0 && author.value.length > 0 && description.value.length > 0) {
           const data = {
             title: title.value, 
             author: author.value, 
             description: description.value,
-            image: response.data,
+            // image: response.data,
             cover: img,
+            genres: categories.toString(),
             user
           }
       
@@ -93,14 +104,14 @@ export const ShareBook = () => {
           dispatch(closeLoader())
           dispatch(setError('All fields are required!')) 
         }
-      }).catch(err => {
-        dispatch(closeLoader())
-        dispatch(setError(err.response.data.data.errors[0].message))
-      })
-    } else {
-      dispatch(closeLoader())
-      dispatch(setError('Files are empty!'))
-    }
+      // }).catch(err => {
+      //   dispatch(closeLoader())
+      //   dispatch(setError(err.response.data.data.errors[0].message))
+      // })
+    // } else {
+    //   dispatch(closeLoader())
+    //   dispatch(setError('Files are empty!'))
+    // }
   }
 
   return (
@@ -130,10 +141,10 @@ export const ShareBook = () => {
               </SearchBook>
               <input type="text" autoComplete="off" name="author" placeholder="Author" ref={authorRef} />
               <textarea name="description" placeholder="Why do you love this book?"></textarea>
-              <label htmlFor="image">
+              {/* <label htmlFor="image">
                   <UploadImage /> &nbsp;&nbsp; add image
               </label>
-              <input type="file" name="image" id="image" multiple />
+              <input type="file" name="image" id="image" multiple /> */}
               <input type="submit" value="Share Book" />
               <Error />
               <Close onClick={() => {

@@ -13,6 +13,7 @@ import { Loader } from './Components/Auth/Loader';
 import { Register } from './Components/Auth/Register';
 import { ShareBook } from './Components/ShareBook/ShareBook';
 import { getComments } from './Store/action/commentActions';
+import { addGenre } from './Store/action/genreActions';
 
 export default function App() {
   
@@ -22,6 +23,7 @@ export default function App() {
   const shareBook = useSelector(state => state.shareBookReducer.isOpen)
   const isLoading = useSelector(state => state.loadingReducer.isLoading)
   const loggedIn = useSelector(state => state.userReducer.loggedIn)
+  const books = useSelector(state => state.bookReducer.books)
   const isOpen = useSelector(state => state.modalReducer.isOpen)
   const dispatch = useDispatch()
 
@@ -30,6 +32,12 @@ export default function App() {
     dispatch(getBooks())
     dispatch(getComments())
   }, [dispatch])
+
+  useEffect(() => {
+    books.forEach(book => {
+        book.genres.split(', ').forEach(genre => dispatch(addGenre(genre)))
+    });
+  }, [books, dispatch])
 
   return (
       <ThemeProvider theme={theme}>

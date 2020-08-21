@@ -8,10 +8,10 @@ import { closeModal } from '../../../Store/action/modalActions';
 import { Heart } from './Heart';
 import { WishIcon } from './WishIcon';
 import axios from 'axios'
-import { getBooks } from '../../../Store/action/bookActions';
 import { openLoginModal } from '../../../Store/action/authModalActions';
 import { AddComment } from './Comments/AddComment';
 import { Comments } from './Comments/Comments';
+import { BookDetails } from './BookDetails';
 
 const options = {
   colorCount: 5,
@@ -81,7 +81,6 @@ export const BookModal = () => {
       user
     }, config).then(response => {
         setLikeId(response.data.id)
-        dispatch(getBooks())
       })
       .catch(err => console.log(err.response))
   }
@@ -90,9 +89,6 @@ export const BookModal = () => {
     setLikesCount(likesCount - 1)
     setLiked(false)
     axios.delete(`${process.env.REACT_APP_API_URL}/likes/${id}`, config)
-    .then(() => {
-        dispatch(getBooks())
-      })
   }
 
   const handleLike = () => {
@@ -119,17 +115,15 @@ export const BookModal = () => {
               <WishIcon /> 
             </div>
             <div>
-              <h2>{bookDetails.title}</h2>
-              <p>by {bookDetails.author}</p>
+              <BookDetails genres={bookDetails.genres} title={bookDetails.title} author={bookDetails.author} description={bookDetails.description} />
 
-              <article>{bookDetails.description}</article>
+              <article>
+                <div className="heart" onClick={handleLike}>
+                  <Heart liked={liked} /> {likesCount > 0 && likesCount}
+                </div>
+                <span>Shared by <u>{bookDetails.user.username}</u></span>
+              </article>
               <hr />
-
-              <span>Recommended by <u>{bookDetails.user.username}</u></span>
-              <div className="heart" onClick={handleLike}>
-                <Heart liked={liked} /> {likesCount > 0 && likesCount}
-              </div>
-              <br />
 
               {/* <ul>
                 {bookDetails.image.map(image => {
@@ -137,7 +131,7 @@ export const BookModal = () => {
                 })}
               </ul> */}
 
-              <h4>Comments:</h4>
+              <h5><i>Comments:</i></h5>
               <Comments book={bookDetails} />
               <AddComment book={bookDetails} />
             </div>
@@ -164,7 +158,7 @@ const Container = styled(motion.div)`
   z-index: 500;
   border-radius: 15px;
   overflow: hidden;
-  padding: 5% 5% 5% 27%;
+  padding: 3% 5% 5% 27%;
   color: ${({theme}) => theme.textColor};
   font-size: 18px;
   line-height: 1.7;
@@ -193,28 +187,8 @@ const Container = styled(motion.div)`
     top: 50%;
     height: 100%;
     border-radius: 0;
-    padding: 45% 3% 3% 3%;
+    padding: 38% 3% 3% 3%;
     font-size: 14px;
-  }
-
-  h2 {
-    font-weight: 500;
-    font-size: 35px;
-    margin-bottom: 10px;
-
-    @media only screen and (max-width: 600px) {
-      font-size: 20px;
-      margin-bottom: 5px;
-    }
-  }
-
-  p {
-    opacity: 0.8;
-    margin-bottom: 20px;
-
-    @media only screen and (max-width: 600px) {
-      margin-bottom: 5px;
-    }
   }
 
   &>div:last-of-type {
@@ -238,8 +212,8 @@ const Container = styled(motion.div)`
     }
 
     hr {
-      margin: 25px 0;
       border: 0;
+      margin-bottom: 10px;
       opacity: 0.5;
       border-bottom: 0.5px solid ${({theme, darkTheme}) => darkTheme ? theme.secondary : theme.primary};
     }
@@ -265,17 +239,24 @@ const Container = styled(motion.div)`
     }
   }
 
-  &>div>span {
-    display: block;
-    margin-bottom: 25px;
-    font-size: 14px;
+  article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px 5px;
 
-    u {
-      color: ${({theme, darkTheme}) => darkTheme ? theme.secondary : theme.primary}
-    }
+    span {
+      display: block;
+      font-size: 13px;
+      font-style: italic;
 
-    @media only screen and (max-width: 600px) {
-      margin-bottom: 5px;
+      u {
+        color: ${({theme, darkTheme}) => darkTheme ? theme.secondary : theme.primary}
+      }
+
+      @media only screen and (max-width: 600px) {
+        margin-bottom: 5px;
+      }
     }
   }
 

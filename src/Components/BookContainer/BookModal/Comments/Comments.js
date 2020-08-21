@@ -8,7 +8,7 @@ export const Comments = (props) => {
   return (
     comments.map(comment => {
       if(comment.book.id === props.book.id)
-        return <Comment key={comment.id} comment={comment.comment} user={comment.user.username} />
+        return <Comment key={comment.id} comment={comment.comment} user={comment.user.username} date={comment.created_at} />
 
         return false
     })
