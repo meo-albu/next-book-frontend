@@ -12,6 +12,10 @@ import { openLoginModal } from '../../../Store/action/authModalActions';
 import { AddComment } from './Comments/AddComment';
 import { Comments } from './Comments/Comments';
 import { BookDetails } from './BookDetails';
+import { EditBook } from './EditBook';
+import { openDeleteBookModal, openEditBookModal, getBooks } from '../../../Store/action/bookActions';
+import { DeleteBook } from './DeleteBook';
+import { addToWishlist, deleteFromWishlist } from '../../../Store/action/wishlistActions';
 
 const options = {
   colorCount: 5,
@@ -21,7 +25,9 @@ const options = {
 export const BookModal = () => {
   const theme = useSelector(state => state.themeReducer.themeStyle)
   const darkTheme = useSelector(state => state.themeReducer.darkTheme)
-  const {isOpen, bookDetails} = useSelector(state => state.modalReducer)
+  const {isOpen} = useSelector(state => state.modalReducer)
+  const bookDetails = useSelector(state => state.bookReducer.book)
+  const {editIsOpen, deleteIsOpen} = useSelector(state => state.bookReducer)
   const user = useSelector(state => state.userReducer.user)
   const loggedIn = useSelector(state => state.userReducer.loggedIn)
   const dispatch = useDispatch()
@@ -31,6 +37,7 @@ export const BookModal = () => {
   const [likeId, setLikeId] = useState(null)
   const [likesCount, setLikesCount] = useState(0)
   const [config, setConfig] = useState()
+  const [menu, setMenu] = useState(false)
   
   const url = bookDetails && bookDetails.cover
   const vibrantUrl = bookDetails && `https://cors-anywhere.herokuapp.com/${bookDetails.cover}`
@@ -81,6 +88,8 @@ export const BookModal = () => {
       user
     }, config).then(response => {
         setLikeId(response.data.id)
+        dispatch(addToWishlist(response.data.book))
+        dispatch(getBooks())
       })
       .catch(err => console.log(err.response))
   }
@@ -88,7 +97,10 @@ export const BookModal = () => {
   const deleteLike = (id) => {
     setLikesCount(likesCount - 1)
     setLiked(false)
-    axios.delete(`${process.env.REACT_APP_API_URL}/likes/${id}`, config)
+    axios.delete(`${process.env.REACT_APP_API_URL}/likes/${id}`, config).then(() => {
+      dispatch(getBooks())
+      dispatch(deleteFromWishlist(id))
+    })
   }
 
   const handleLike = () => {
@@ -109,13 +121,36 @@ export const BookModal = () => {
               animate={{opacity: 1, y: 0, translateX: '-50%', translateY: '-50%', transition: {duration: 0.4}}}
               exit={{opacity: 0, transition: {duration: 0.3}}}
             >
+            {user.id === bookDetails.user.id && <Settings onClick={() => setMenu(!menu)}><span /></Settings>}
+            {menu &&
+              <Menu>
+                <button onClick={() => {
+                    dispatch(openDeleteBookModal(bookDetails.id))
+                    setMenu(false)
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 21 27">
+                      <path id="Icon_material-delete" data-name="Icon material-delete" d="M9,28.5a3.009,3.009,0,0,0,3,3H24a3.009,3.009,0,0,0,3-3v-18H9ZM28.5,6H23.25l-1.5-1.5h-7.5L12.75,6H7.5V9h21Z" transform="translate(-7.5 -4.5)" fill={darkTheme ? theme.secondary : theme.primary} />
+                    </svg>
+                  Delete book</button>
+                <button onClick={() => {
+                  dispatch(openEditBookModal(bookDetails.id))
+                  setMenu(false)
+                }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 13.002 13.002">
+                      <path id="Icon_material-mode-edit" data-name="Icon material-mode-edit" d="M4.5,14.79V17.5H7.208L15.2,9.51,12.488,6.8ZM17.291,7.416a.719.719,0,0,0,0-1.018L15.6,4.708a.719.719,0,0,0-1.018,0L13.261,6.029l2.708,2.708Z" transform="translate(-4.5 -4.496)" fill={darkTheme ? theme.secondary : theme.primary} />
+                    </svg>
+                  Edit book</button>
+              </Menu>
+            }
+            {editIsOpen && <EditBook /> }
+            {deleteIsOpen && <DeleteBook /> }
             <GoBack />
             <div className="img">
               <img src={url} alt="img"/>
               <WishIcon /> 
             </div>
             <div>
-              <BookDetails genres={bookDetails.genres} title={bookDetails.title} author={bookDetails.author} description={bookDetails.description} />
+              <BookDetails genres={bookDetails.genres} infoLink={bookDetails.infoLink} title={bookDetails.title} author={bookDetails.author} description={bookDetails.description} />
 
               <article>
                 <div className="heart" onClick={handleLike}>
@@ -197,7 +232,6 @@ const Container = styled(motion.div)`
     padding-right: 10px;
 
     .heart {
-      /* position:absolute; */
       bottom: 20px;
       left: 22%;
       display: flex;
@@ -227,9 +261,6 @@ const Container = styled(motion.div)`
 
     &::-webkit-scrollbar {
         width: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
     }
 
     &::-webkit-scrollbar-thumb {
@@ -286,7 +317,7 @@ const Container = styled(motion.div)`
     @media only screen and (max-width: 600px) {
       top: 20px;
       left: auto;
-      right: 20px;
+      right: 40px;
       width: 25%;
       transform: none;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
@@ -327,4 +358,80 @@ const Bg = styled(motion.div)`
   right: -20vw;
   background: rgba(0, 0, 0, 0.9);
   z-index: 300;
+`
+
+const Settings = styled(motion.div)`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 20px;
+  height: 16px;
+  cursor: pointer;
+  z-index: 300;
+
+  @media only screen and (max-width: 600px) {
+    right: 10px;
+    top: 125px;
+  }
+
+  span,
+  ::before,
+  ::after {
+    position: absolute;
+    border-radius: 50%;
+    content: '';
+    top: 0;
+    left: 45%;
+    height: 4px;
+    width: 4px;
+    background: ${({theme}) => theme.primary};
+  }
+
+  ::after {
+    top: auto;
+    bottom: 0;
+  }
+
+  span{
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`
+
+const Menu = styled.div`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 150px;
+  z-index: 300;
+  background: ${({theme}) => theme.background};
+  color: ${({theme}) => theme.textColor};
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+  @media only screen and (max-width: 600px) {
+    right: 30px;
+    top: 140px;
+  }
+
+  button {
+    width: 100%;
+    background: none;
+    border: 0;
+    color: ${({theme}) => theme.secondary};
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+
+    :hover {
+      background: ${({darkTheme}) => darkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)' };
+    }
+
+    svg {
+      margin-right: 5px;
+    }
+  }
 `

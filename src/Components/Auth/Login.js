@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import { logUserIn } from '../../Store/action/userActions'
+import { logUserIn, updatePassword } from '../../Store/action/userActions'
 import { motion } from 'framer-motion'
 import { Error } from './Error'
 import {clearError} from '../../Store/action/userActions'
@@ -9,37 +9,73 @@ import { closeLoginModal } from '../../Store/action/authModalActions'
 
 export const Login = () => {
   const dispatch = useDispatch()
+  const [forgot, setForgot] = useState(false)
 
-  const login = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
 
-    const [username, password] = e.target.elements
+    if(forgot) {
+      const [email] = e.target.elements
+      dispatch(updatePassword(email.value))
+    } else {
+      const [username, password] = e.target.elements
     
-    dispatch(logUserIn({
-      identifier: username.value,
-      password: password.value
-    }))
+      dispatch(logUserIn({
+        identifier: username.value,
+        password: password.value
+      }))
+    }
   }
 
 
   return (
     <Container>
-      <motion.form 
-        onSubmit={login}
-        initial={{opacity: 0, y: 100}}
-        animate={{opacity: 1, y: 0, transition: {duration: 0.4}}}
-        exit={{opacity: 0, transition: {duration: 0.3}}}>
+      {forgot 
+      ? <div>
+        <motion.form 
+          onSubmit={handleSubmit}
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0, transition: {duration: 0.4}}}
+          exit={{opacity: 0, transition: {duration: 0.3}}}>
 
-        <h2>Login</h2>
-        <input type='text' name='username' placeholder='username' />
-        <input type='password' name='password' placeholder='password' />
-        <input type='submit' value='Login' />
-        <Error />
-        <Close onClick={() => {
-          dispatch(closeLoginModal())
-          dispatch(clearError())
-        }} />
-      </motion.form>
+          <h2>Reset password</h2>
+          <input type='text' name='email' placeholder='email' />
+          <input type='submit' value='Reset Password' />
+          <Error />
+          <Close onClick={() => {
+            dispatch(closeLoginModal())
+            dispatch(clearError())
+          }} />
+          <span onClick={() => setForgot(!forgot)}>
+            {forgot
+              ? <i><u>go back to login</u></i>
+              : <i><u>reset password</u></i>
+            }
+          </span>
+        </motion.form>
+      </div>
+      : <motion.form 
+          onSubmit={handleSubmit}
+          initial={{opacity: 0, y: 100}}
+          animate={{opacity: 1, y: 0, transition: {duration: 0.4}}}
+          exit={{opacity: 0, transition: {duration: 0.3}}}>
+
+          <h2>Login</h2>
+          <input type='text' name='username' placeholder='username' />
+          <input type='password' name='password' placeholder='password' />
+          <input type='submit' value='Login' />
+          <Error />
+          <Close onClick={() => {
+            dispatch(closeLoginModal())
+            dispatch(clearError())
+          }} />
+          <span onClick={() => setForgot(!forgot)}>
+            {forgot
+              ? <i><u>go back to login</u></i>
+              : <i><u>reset password</u></i>
+            }
+          </span>
+        </motion.form>}
     </Container>
   )
 }
@@ -64,6 +100,14 @@ const Container = styled(motion.div)`
     border-radius: 5px;
     color: ${({theme}) => theme.textColor};
     width: 400px;
+
+    >span {
+      color: ${({theme}) => theme.secondary};
+      font-size: 12px;
+      display: inline-block;
+      margin-top: 10px;
+      cursor: pointer;
+    }
 
     @media only screen and (max-width: 600px) {
       width: 100vw;

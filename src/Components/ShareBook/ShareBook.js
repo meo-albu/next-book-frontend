@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import { showBookContainer } from '../../Store/action/bookContainerActions'
 import { setError } from '../../Store/action/userActions'
 import { Error } from '../Auth/Error'
 import { openLoader, closeLoader } from '../../Store/action/loadingActions'
+import { openToast, closeToast } from '../../Store/action/toastActions'
 
 export const ShareBook = () => {
   const user = useSelector(state => state.userReducer.user)
@@ -29,6 +30,7 @@ export const ShareBook = () => {
   const authorRef = useRef()
 
   const [categories, setCategories] = useState('')
+  const [infoLink, setInfoLink] = useState('')
   
   const setInput = (book) => {
     titleRef.current.value = book.title
@@ -36,14 +38,11 @@ export const ShareBook = () => {
       authorRef.current.value = book.authors[0]
     if(book.imageLinks)
       setImg(book.imageLinks.thumbnail)
-    if(book.categories) {
+    if(book.categories)
       setCategories(book.categories)
-    }
+    if(book.infoLink)
+      setInfoLink(book.infoLink)
   }
-
-  useEffect(() => {
-    console.log(categories)
-  }, [categories])
   
   const findTitle = e => {
     const query = e.target.value
@@ -52,7 +51,6 @@ export const ShareBook = () => {
       setIsSearching(true)
       axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
         .then(res => {
-          console.log(res.data)
           if(res.data.items) {
             setBookTitles(res.data.items)
           }
@@ -89,6 +87,7 @@ export const ShareBook = () => {
             // image: response.data,
             cover: img,
             genres: categories.toString(),
+            infoLink,
             user
           }
       
@@ -97,6 +96,10 @@ export const ShareBook = () => {
             dispatch(closeShareModal())
             dispatch(closeLoader())
             dispatch(showBookContainer())
+            setTimeout(() => {
+              dispatch(closeToast())
+            }, 4000);
+            dispatch(openToast('The book was added!'))
           }).catch(error => {
             dispatch(closeLoader())
             console.log(error.response.data)
@@ -117,6 +120,7 @@ export const ShareBook = () => {
 
   return (
     <Container img={img}>
+      <div>
       <motion.form 
         onSubmit={shareBook}
         initial={{opacity: 0, y: 100}}
@@ -159,6 +163,7 @@ export const ShareBook = () => {
               </div>
             </div>
         </motion.form>
+      </div>
     </Container>
   )
 }
@@ -174,6 +179,14 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
+
+  &>div {
+    @media only screen and (max-width: 600px) {
+      width: 100vw;
+      height: 100%;
+    }
+  }
 
   form {
     position: relative;
@@ -184,6 +197,25 @@ const Container = styled.div`
     color: ${({theme}) => theme.textColor};
     width: 600px;
     display: flex;
+    overflow-y: scroll;
+    height: 100%;
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: ${({darkTheme}) => darkTheme ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)' };
+      }
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        transition: 0.5s;
+        border-radius: 5px;
+        background: ${({darkTheme}) => darkTheme ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' };
+    }
 
     &>div {
       flex: 2

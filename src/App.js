@@ -14,8 +14,11 @@ import { Register } from './Components/Auth/Register';
 import { ShareBook } from './Components/ShareBook/ShareBook';
 import { getComments } from './Store/action/commentActions';
 import { addGenre } from './Store/action/genreActions';
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { ResetPassword } from './Reset-password';
+import { Toast } from './Components/Toast';
 
-export default function App() {
+export default function App(props) {
   
   const theme = useSelector(state => state.themeReducer.themeStyle)
   const login = useSelector(state => state.loginModalReducer.isOpen)
@@ -25,6 +28,8 @@ export default function App() {
   const loggedIn = useSelector(state => state.userReducer.loggedIn)
   const books = useSelector(state => state.bookReducer.books)
   const isOpen = useSelector(state => state.modalReducer.isOpen)
+  const toast = useSelector(state => state.toastReducer.isOpen)
+  const toastMessage = useSelector(state => state.toastReducer.message)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,21 +40,33 @@ export default function App() {
 
   useEffect(() => {
     books.forEach(book => {
-        book.genres.split(', ').forEach(genre => dispatch(addGenre(genre)))
+        book.genres.split(', ').forEach(genre => genre !== '' && dispatch(addGenre(genre)))
     });
   }, [books, dispatch])
 
   return (
       <ThemeProvider theme={theme}>
         <GeneralStyles>
-          <Header />
-          <Main />
-          <Sidebar />
-          {isOpen && <BookModal />}
-          {shareBook && loggedIn && <ShareBook />}
-          {login && <Login />}
-          {register && <Register />}
-          {isLoading && <Loader />}
+          <Router>
+            <Switch>
+              <Route exact path='/'>
+                <>
+                  <Header />
+                  <Main />
+                  <Sidebar />
+                    {isOpen && <BookModal />}
+                    {shareBook && loggedIn && <ShareBook />}
+                    {login && <Login />}
+                    {register && <Register />}
+                    {isLoading && <Loader />}
+                    {toast && <Toast>{toastMessage}</Toast>}
+                </>
+              </Route>
+              <Route exact path='/reset-password'>
+                <ResetPassword />
+              </Route>
+            </Switch>
+          </Router>
         </GeneralStyles>
       </ThemeProvider>
   );

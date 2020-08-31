@@ -86,8 +86,8 @@ export const BookContainer = () => {
           animate={{ y: bookC ? [20, 10] : [0, 10] }}
           transition={{
             type: 'spring',
-            y: {yoyo: Infinity},
-            scaleY: {ease: 'easeInOut'}
+            y: {yoyo: Infinity, duration: 0.6},
+            scaleY: {ease: 'easeInOut'} 
           }} 
         >
           <OpenCloseContainer onClick={showHideBooks} theme={themeStyle} darkTheme={darkTheme} bookC={bookC}/>
@@ -111,15 +111,15 @@ export const BookContainer = () => {
                 return self.indexOf(value) === index
               }).map(genre => {
                 return (
-                  <div key={genre}>
-                      <input type="checkbox" name={genre} id={genre} />
+                  <motion.div key={genre} whileHover={{x: '5px'}}>
+                    <input type="checkbox" name={genre} id={genre} />
                     <label htmlFor={genre}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="5" height="9" viewBox="0 0 6.167 10.786">
                         <path id="Icon_ionic-ios-arrow-forward" data-name="Icon ionic-ios-arrow-forward" d="M15.554,11.587,11.473,7.509a.768.768,0,0,1,0-1.089.777.777,0,0,1,1.092,0l4.624,4.621a.769.769,0,0,1,.022,1.063l-4.644,4.653a.771.771,0,0,1-1.092-1.089Z" transform="translate(-11.246 -6.196)"/>
                       </svg>
                       {genre}
                     </label>
-                  </div>
+                  </motion.div>
                 )
               })
             }
@@ -167,6 +167,7 @@ const Container = styled.div`
   box-shadow: ${({darkTheme}) => darkTheme ? '0 0 10px rgba(0, 0, 0, 0.8)' : '0 0 10px rgba(0, 0, 0, 0.2)' };
   padding: 0 calc(5% - 30px) 10px;
   border-radius: ${({bookC}) => bookC ? '0' : '1vw' };
+  text-shadow: none;
   
   &>article {
     display: flex;
@@ -192,25 +193,20 @@ const Container = styled.div`
       padding: 30px;
       
       &>div {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 200px));
+        gap: 20px;
+        justify-content: space-around;
 
-        &:after {
-          content: "";
-          flex: auto;
-        }
-
-        @media only screen and (max-width: 600px) {
-          &:after {
-            display: none;
-          }
+        @media only screen and (max-width: 450px) {
+          justify-content: center;
         }
       }
 
       @media only screen and (max-width: 600px) {
         padding: 0 5px;
       }
+
     }
 
     &:hover {

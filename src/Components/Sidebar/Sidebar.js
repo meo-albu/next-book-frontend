@@ -6,13 +6,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import { openSidebar, closeSidebar } from '../../Store/action/sidebarActions'
 import { CloseSidebarButton } from './CloseSidebarButton'
 import { DarkTheme } from './DarkTheme'
-import { logUserOut } from '../../Store/action/userActions'
+import { UpdateAccount } from '../Auth/UpdateAccount'
+import { Heart } from '../BookContainer/BookModal/Heart'
 import { closeLoginModal, openRegisterModal, closeRegisterModal, openLoginModal } from '../../Store/action/authModalActions'
+import { Wishlist } from './Wishlist'
+import { openWishlist } from '../../Store/action/wishlistActions'
+import { UserDetails } from './UserDetails'
 
 export const Sidebar = () => {
-  const themeStyle = useSelector(state => state.themeReducer.themeStyle)
+  const darkTheme = useSelector(state => state.themeReducer.darkTheme)
   const sidebar = useSelector(state => state.sidebarReducer.opened)
   const loggedIn = useSelector(state => state.userReducer.loggedIn)
+  const isOpen = useSelector(state => state.wishlistReducer.isOpen)
   const dispatch = useDispatch()
 
   const sidebarRef = useRef(null)
@@ -36,8 +41,27 @@ export const Sidebar = () => {
   })
   
   return (
-    <Container sidebar={sidebar} ref={sidebarRef} theme={themeStyle}>
+    <Container sidebar={sidebar} ref={sidebarRef} darkTheme={darkTheme}>
+      {isOpen && <Wishlist />}
       <CloseSidebarButton />
+
+      <Scrollable>
+        <h3>Change theme:</h3>
+        <ChangeTheme />
+        <DarkTheme />
+
+        <hr />
+
+        <UserDetails />
+        <WhishlistButton onClick={() => dispatch(openWishlist()) }  darkTheme={darkTheme}><Heart liked /> Wishlist </WhishlistButton>
+        <hr />
+        
+        {loggedIn && <UpdateAccount /> }
+      </Scrollable>
+      
+      
+      <Swipper ref={closeSidebarRef} />
+      
       {!loggedIn && 
         <div style={{
           position: 'absolute',
@@ -55,18 +79,28 @@ export const Sidebar = () => {
             dispatch(closeSidebar())
             }}>Register</Register>
         </div>}
-      <h3>Change theme:</h3>
-      <ChangeTheme />
-      <DarkTheme />
-      {loggedIn &&
-        <Logout onClick={() => {
-          dispatch(logUserOut())
-          dispatch(closeSidebar())
-        }}>Logout</Logout> }
-      <Swipper ref={closeSidebarRef} />
     </Container>
   )
 }
+
+const Scrollable = styled.div`
+  overflow-y: scroll;
+  height: calc(100% - 60px);
+
+  hr {
+    border: 0;
+    border-top: 0.5px solid ${({theme}) => theme.secondary};
+    margin: 40px 0;
+  }
+
+  &::-webkit-scrollbar {
+      width: 1px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0);
+  }
+`
 
 const Container = styled.div`
   position: fixed;
@@ -130,20 +164,6 @@ const Swipper = styled.div`
   width: 15px;
 `
 
-const Logout = styled.button`
-  background: ${({theme}) => theme.primary};
-  display: block;
-  text-align: center;
-  padding: 10px;
-  border: 0;
-  margin: 15px 0;
-  width: 100%;
-  color: white;
-  font-size: 16px;
-  font-weight: 300;
-  cursor: pointer;
-`
-
 const Login = styled.span`
   cursor: pointer;
   color: ${({theme}) => theme.textColor};
@@ -167,5 +187,19 @@ const Register = styled.button`
 
   @media only screen and (max-width: 600px) {
    display: inline-block;
+  }
+`
+
+const WhishlistButton = styled.button`
+  border: 0;
+  background: none;
+  color: ${({theme}) => theme.textColor };
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 25px;
+
+  svg {
+    margin-right: 10px;
   }
 `

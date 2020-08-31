@@ -8,6 +8,7 @@ export const BookDetails = (props) => {
       <H2>{props.title}</H2>
       <p>by {props.author}</p>
       <Description>{props.description}</Description>
+      <a href={props.infoLink} target="_blank" rel="noopener noreferrer">See more details</a>
     </div>
   )
 }
@@ -25,10 +26,19 @@ const Genres = styled.p`
 
 const Description = styled.p`
   font-size: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
-  @media only screen and (max-width: 600px) {
-    margin-bottom: 20px;
+  +a {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    font-style: italic;
+    display: inline-block;
+    color: ${({theme}) => theme.secondary};
+  
+    @media only screen and (max-width: 600px) {
+      margin-bottom: 20px;
+    }
   }
 `
 
@@ -50,7 +60,7 @@ const H2 = styled.h2`
       margin-bottom: 15px;
     }
   }
-
+  
   @media only screen and (max-width: 600px) {
     font-size: 20px;
     margin-bottom: 5px;

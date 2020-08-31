@@ -51,7 +51,7 @@ export const Main = ({children}) => {
           animate={{ y: bookC ? [20, 10] : [0, 10] }}
           transition={{
             type: 'spring',
-            y: {yoyo: Infinity},
+            y: {yoyo: Infinity, duration: 0.6},
             scaleY: {ease: 'easeInOut'}
           }} 
         >
@@ -118,7 +118,7 @@ const Container = styled.div`
 const Button = styled.button`
   padding: 15px 70px;
   border-radius: 55px;
-  background: ${({theme, primary}) => primary ? theme.primary : 'transparent'};
+  background: ${({theme, primary}) => primary ? theme.primary : theme.background};
   color: ${({theme, primary, darkTheme}) => primary ? 'white' : darkTheme ? theme.secondary : theme.primary};
   margin-right: ${({primary}) => primary ? '20px' : 0};
   font-weight: ${({primary}) => primary ? 300 : 600};

@@ -9,6 +9,8 @@ import modalReducer from './modalReducer'
 import loadingReducer from './loadingReducer'
 import commentReducer from './commentReducer'
 import genreReducer from './genreReducer'
+import wishlistReducer from './wishlistReducer'
+import toastReducer from './toastReducer'
 import {loginModalReducer, registerModalReducer} from './authModalReducer'
 import {combineReducers} from 'redux'
 
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
     loadingReducer,
     shareBookReducer,
     commentReducer,
-    genreReducer
+    genreReducer,
+    wishlistReducer,
+    toastReducer
 })
 
 export default rootReducer
