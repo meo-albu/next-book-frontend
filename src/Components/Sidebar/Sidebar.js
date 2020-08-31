@@ -45,19 +45,22 @@ export const Sidebar = () => {
       {isOpen && <Wishlist />}
       <CloseSidebarButton />
 
-      <Scrollable>
-        <h3>Change theme:</h3>
-        <ChangeTheme />
-        <DarkTheme />
+        <Scrollable>
+          <h3>Change theme:</h3>
+          <ChangeTheme />
+          <DarkTheme />
 
-        <hr />
+          {loggedIn && 
+            <div>
+              <hr />
 
-        <UserDetails />
-        <WhishlistButton onClick={() => dispatch(openWishlist()) }  darkTheme={darkTheme}><Heart liked /> Wishlist </WhishlistButton>
-        <hr />
-        
-        {loggedIn && <UpdateAccount /> }
-      </Scrollable>
+              <UserDetails />
+              <WhishlistButton onClick={() => dispatch(openWishlist()) }  darkTheme={darkTheme}><Heart liked /> Wishlist </WhishlistButton>
+              <hr />
+
+              <UpdateAccount />
+            </div>} 
+        </Scrollable>
       
       
       <Swipper ref={closeSidebarRef} />

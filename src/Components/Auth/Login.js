@@ -72,7 +72,7 @@ export const Login = () => {
           <span onClick={() => setForgot(!forgot)}>
             {forgot
               ? <i><u>go back to login</u></i>
-              : <i><u>reset password</u></i>
+              : <i><u>forgot password?</u></i>
             }
           </span>
         </motion.form>}

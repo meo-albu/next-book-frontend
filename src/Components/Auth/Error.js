@@ -26,4 +26,5 @@ const Container = styled.div`
   font-size: 12px;
   padding: 20px 0 0;
   height: 15px;
+  text-align: right;
 `
