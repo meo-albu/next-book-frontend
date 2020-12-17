@@ -10,6 +10,7 @@ export const FilterSection = ({children}) => {
 }
 
 const Container = styled.div`
+  position: relative;
   &>div {
     display: flex;
     align-items: center;

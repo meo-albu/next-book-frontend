@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { hideBookContainer, showBookContainer } from '../../Store/action/bookContainerActions'
 import { Book } from './Book/Book'
 import { FilterSection } from './FilterSection'
+import UnderDevelopmentFeature from '../UnderDevelopmentFeature'
 
 export const BookContainer = () => {
   const themeStyle = useSelector(state => state.themeReducer.themeStyle)
@@ -96,10 +97,11 @@ export const BookContainer = () => {
 
       <article>
         <FilterSection>
+          <UnderDevelopmentFeature />
           <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 20.44 20.445">
-            <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M24.7,23.458,19.015,17.72a8.1,8.1,0,1,0-1.23,1.246l5.648,5.7a.875.875,0,0,0,1.235.032A.881.881,0,0,0,24.7,23.458ZM12.649,19.035a6.4,6.4,0,1,1,4.524-1.874A6.358,6.358,0,0,1,12.649,19.035Z" transform="translate(-4.5 -4.493)" fill={themeStyle.primary}/>
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 20.44 20.445">
+              <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M24.7,23.458,19.015,17.72a8.1,8.1,0,1,0-1.23,1.246l5.648,5.7a.875.875,0,0,0,1.235.032A.881.881,0,0,0,24.7,23.458ZM12.649,19.035a6.4,6.4,0,1,1,4.524-1.874A6.358,6.358,0,0,1,12.649,19.035Z" transform="translate(-4.5 -4.493)" fill={themeStyle.primary}/>
+            </svg>
             <input type="text" placeholder="Search a book" autoComplete="false" onChange={searchBook} />
           </div>
 
