@@ -102,11 +102,7 @@ const Container = styled.div`
     font-size: 28px;
     
     >p {
-      font-size: 30px;
-    }
-
-    &>span {
-      font-size: 22px;
+      font-size: 25px;
     }
 
     br {
