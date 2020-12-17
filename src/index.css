@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Niconne&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Maitree:wght@300;600&family=Raleway:ital,wght@0,300;0,400;0,600;1,200;1,300;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Montserrat:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 * {
   margin: 0;
@@ -7,7 +7,7 @@
   box-sizing: border-box;
   outline: 0;
   transition: background 0.3s;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 400;
 }
 
@@ -16,6 +16,6 @@ path {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Maitree', serif;
+  font-family: 'Lora', serif;
   font-weight: 600;
 }

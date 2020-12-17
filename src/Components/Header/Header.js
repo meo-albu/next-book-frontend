@@ -36,7 +36,7 @@ export const Header = () => {
 
 const Logo = styled.div`
   position: absolute;
-  left: 5%;
+  left: 12%;
   top: 50%;
   transform: translateY(-50%);
   font-size: 40px;
@@ -51,6 +51,7 @@ const Logo = styled.div`
 
   @media only screen and (max-width: 600px) {
     font-size: 35px;
+    left: 5%;
   }
 `
 
@@ -107,10 +108,10 @@ const Burger = styled.div`
 `
 
 const Containter = styled.div`
-  padding: 20px 5%;
+  padding: 20px 12%;
   background: #101010;
   background: ${({theme}) => theme.background};
-  box-shadow: ${({darkTheme}) => darkTheme ? '0 0 5px rgba(0, 0, 0, 0.9)' : '0 0 5px rgba(0, 0, 0, 0.3)'};
+  box-shadow: ${({darkTheme}) => darkTheme ? '0 0 7px rgba(0, 0, 0, 0.3)' : '0 0 5px rgba(0, 0, 0, 0.3)'};
   position: fixed;
   width: 100vw;
   color: white;
@@ -119,6 +120,10 @@ const Containter = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media only screen and (max-width: 700px) {
+   padding: 15px 5%;
+  }
 `
 
 const Login = styled.span`

@@ -2,8 +2,8 @@ const isDarkTheme = localStorage.getItem('darkTheme') ? localStorage.getItem('da
 
 export const themeColors = {
   greenTheme: {
-    primary: 'rgba(62, 144, 82, 1)',
-    secondary: 'rgba(106, 233, 157, 1)'
+    primary: 'rgba(28, 165, 131, 1)',
+    secondary: 'rgba(80, 210, 178, 1)'
   },
   purpleTheme: {
     primary: 'rgba(136, 0, 255, 1)',
@@ -24,7 +24,7 @@ export const themeColors = {
 }
 
 Object.values(themeColors).map(theme => {
-    theme.background = isDarkTheme ? 'rgba(29, 33, 46, 1)' : 'rgba(255, 255, 255, 1)'
+    theme.background = isDarkTheme ? 'rgba(72, 72, 72, 1)' : 'rgba(255, 253, 243, 1)'
     theme.textColor = isDarkTheme ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)'
     theme.gradient = `linear-gradient(90deg, ${theme.primary}, ${theme.secondary})`
     return true

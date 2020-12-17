@@ -164,8 +164,8 @@ const Container = styled.div`
   left: 0;
   background: ${({theme}) => theme.background};
   color: ${({theme}) => theme.textColor};
-  box-shadow: ${({darkTheme}) => darkTheme ? '0 0 10px rgba(0, 0, 0, 0.8)' : '0 0 10px rgba(0, 0, 0, 0.2)' };
-  padding: 0 calc(5% - 30px) 10px;
+  box-shadow: ${({darkTheme}) => darkTheme ? '0 0 5px rgba(0, 0, 0, 0.3)' : '0 0 10px rgba(0, 0, 0, 0.2)' };
+  padding: 0 calc(12% - 30px) 10px;
   border-radius: ${({bookC}) => bookC ? '0' : '1vw' };
   text-shadow: none;
   
@@ -229,6 +229,10 @@ const Container = styled.div`
 
   &>header {
     padding: 10px 0 20px;
+  }
+
+  @media only screen and (max-width: 1400px) {
+    text-align: left;
   }
 
   @media only screen and (max-width: 600px) {

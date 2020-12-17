@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Image } from './Image'
 import { BookContainer } from '../BookContainer/BookContainer'
-import { Bg } from './Bg'
-import { PhoneBg } from './PhoneBg'
 import { showBookContainer, hideBookContainer } from '../../Store/action/bookContainerActions'
 import { openLoginModal } from '../../Store/action/authModalActions'
 import { openShareModal } from '../../Store/action/shareBookActions'
@@ -32,12 +30,11 @@ export const Main = ({children}) => {
 
   return (
     <Container theme={themeStyle} darkTheme={darkTheme}>
-        <Bg />
-        <PhoneBg />
         <Image />
       {children}
-      <p>A place where you can find <br />your next book to read...</p>
+      <p>A place where you can find <br />your next book to read...
         <span>… or share a book you love</span>
+      </p>
         <div>
           <Button primary onClick={() => dispatch(showBookContainer())} >Find a book</Button>
           <Button onClick={shareBook} >Share a book</Button>
@@ -71,38 +68,42 @@ const Container = styled.div`
   color: ${({theme}) => theme.textColor};
   transition: ${({theme}) => theme.transition};
   z-index: 0;
-  padding: 0 5% 150px;
-  font-size: 65px;
+  padding: 0 12% 150px;
   line-height: 1.3;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-
-  &>p,
-  &>span {
-    font-style: italic;
-  }
-
-  &>span {
-    font-size: 32px;
-    margin-top: 10px
-  }
-
-  @media only screen and (max-width: 1360px) {
-    font-size: 45px;
-  }
-
-  @media only screen and (max-width: 425px) {
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    color: white;
-  }
-
-  @media only screen and (max-width: 600px) {
-    line-height: 1.25;
-    font-size: 32px;
-    padding-top: 100px;
+  
+  >p {
     display: block;
+    font-weight: 700;
+    font-size: 45px;
+
+    &>span {
+      font-weight: 300;
+      display: block;
+      font-size: 0.5em;
+      margin-top: 10px;
+    }
+  }
+
+
+  @media only screen and (max-width: 1400px) {
+    font-size: 45px;
+    display: block;
+    padding-top: 100px;
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 700px) {
+    line-height: 1.25;
+    padding-top: 100px;
+    font-size: 28px;
+    
+    >p {
+      font-size: 30px;
+    }
 
     &>span {
       font-size: 22px;
@@ -116,23 +117,25 @@ const Container = styled.div`
 `
 
 const Button = styled.button`
-  padding: 15px 70px;
-  border-radius: 55px;
+  padding: 10px 30px;
+  border-radius: 5px;
   background: ${({theme, primary}) => primary ? theme.primary : theme.background};
   color: ${({theme, primary, darkTheme}) => primary ? 'white' : darkTheme ? theme.secondary : theme.primary};
   margin-right: ${({primary}) => primary ? '20px' : 0};
-  font-weight: ${({primary}) => primary ? 300 : 600};
+  font-weight: ${({primary}) => primary ? 300 : 400};
   border: 1px solid ${({theme}) => theme.primary};
-  font-size: 18px;
-  margin-top: 80px;
+  font-size: 15px;
+  margin-top: 50px;
   cursor: pointer;
   transition: 0.3s;
 
-  @media only screen and (max-width: 600px) {
-    padding: 13px 70px;
-    width: 100%;
-    margin-right: 0;
-    margin-top: ${({primary}) => primary ? '15vh' : '15px'};
+  :hover {
+    transform: translateY(-1px);
+  }
+
+  @media only screen and (max-width: 700px) {
+    padding: 10px 20px;
+    font-size: 13px;
   }
 `
 
